@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data e Hora</title>
+<script>
+    function mostrarDataHora() {
+        var diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+        var dataHora = new Date();
+        var diaSemana = diasSemana[dataHora.getDay()];
+        var dia = dataHora.getDate();
+        var mes = dataHora.getMonth() + 1;
+        var ano = dataHora.getFullYear();
+        var hora = dataHora.getHours();
+        var minuto = dataHora.getMinutes();
+        var segundo = dataHora.getSeconds();
+        var formatoHora = hora < 10 ? "0" + hora : hora;
+        var formatoMinuto = minuto < 10 ? "0" + minuto : minuto;
+        var formatoSegundo = segundo < 10 ? "0" + segundo : segundo;
+        var dataHoraFormatada = diaSemana + ', ' + dia + '/' + mes + '/' + ano + ' ' + formatoHora + ':' + formatoMinuto + ':' + formatoSegundo;
+        document.getElementById('data-hora').textContent = dataHoraFormatada;
+    }
+    setInterval(mostrarDataHora, 1000); // Atualiza a cada segundo
+</script>
+</head>
+<body>
+    <div>
+        <h1>Data e Hora Atual</h1>
+        <p id="data-hora"></p>
+    </div>
+</body>
+</html>

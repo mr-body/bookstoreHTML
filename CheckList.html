@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkbox com risco no texto</title>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<h2>Lista de Itens</h2>
+
+<div id="items">
+    <div>
+        <input type="checkbox" id="item1" class="item-checkbox">
+        <label for="item1" class="item-label">Item 1</label><br>
+    </div>
+    <div>
+        <input type="checkbox" id="item2" class="item-checkbox">
+        <label for="item2" class="item-label">Item 2</label><br>
+    </div>
+    <div>
+        <input type="checkbox" id="item3" class="item-checkbox">
+        <label for="item3" class="item-label">Item 3</label><br>
+    </div>
+</div>
+
+<button onclick="hideChecked()">Esconder Itens Checados</button>
+
+<script>
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    const itemLabels = document.querySelectorAll('.item-label');
+
+    itemCheckboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                itemLabels[index].style.textDecoration = 'line-through';
+            } else {
+                itemLabels[index].style.textDecoration = 'none';
+            }
+        });
+    });
+
+    function hideChecked() {
+        const checkedLabels = [];
+        itemCheckboxes.forEach((checkbox, index) => {
+            if (checkbox.checked) {
+                const parentDiv = checkbox.parentNode;
+                parentDiv.style.display = 'none'; // Oculta o div pai do item selecionado
+                checkedLabels.push(itemLabels[index].textContent); // Adiciona o texto do label ao array
+            }
+        });
+        console.log("Labels selecionadas:", checkedLabels); // Exibe os textos das labels no console
+    }
+</script>
+
+</body>
+</html>

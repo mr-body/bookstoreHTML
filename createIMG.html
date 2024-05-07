@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter Div em Imagem</title>
+    <style>
+        /* Estilos para a div */
+        #minhaDiv {
+            width: 1000px;
+            height: 520px;
+            background-color: lightblue;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="minhaDiv">
+        <p>Conteúdo da Div</p>
+    </div>
+    <button onclick="converterParaImagem()">Converter para Imagem</button>
+
+    <script>
+        function converterParaImagem() {
+            // Seleciona a div
+            const div = document.getElementById('minhaDiv');
+
+            // Cria um canvas temporário
+            const canvas = document.createElement('canvas');
+            canvas.width = div.offsetWidth;
+            canvas.height = div.offsetHeight;
+
+            // Obtém o contexto 2D do canvas
+            const context = canvas.getContext('2d');
+
+            // Desenha o fundo da div no canvas
+            context.fillStyle = window.getComputedStyle(div).backgroundColor;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Desenha o conteúdo da div no canvas
+            const img = new Image();
+            img.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + div.offsetWidth + '" height="' + div.offsetHeight + '">' +
+                '<foreignObject width="100%" height="100%">' +
+                new XMLSerializer().serializeToString(div) +
+                '</foreignObject>' +
+                '</svg>');
+
+            img.onload = function () {
+                context.drawImage(img, 0, 0);
+
+                // Cria um link para download da imagem
+                const link = document.createElement('a');
+                link.download = 'imagem_da_div.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+        }
+    </script>
+</body>
+
+</html>

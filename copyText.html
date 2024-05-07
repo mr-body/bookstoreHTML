@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copiar Texto</title>
+</head>
+<body>
+
+<input type="text" id="meuInput" value="Texto a ser copiado">
+<button id="btnCopiar">Copiar Texto</button>
+
+<script>
+document.getElementById("btnCopiar").addEventListener("click", function() {
+    var inputElement = document.getElementById("meuInput");
+    
+    // Seleciona o texto dentro do campo de entrada
+    inputElement.select();
+    
+    // Copia o texto selecionado para a área de transferência
+    document.execCommand("copy");
+    
+    // Desseleciona o texto
+    inputElement.setSelectionRange(0, 0);
+    
+});
+</script>
+
+</body>
+</html>

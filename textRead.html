@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Texto para Voz</title>
+</head>
+<body>
+
+<textarea id="texto" rows="4" cols="50">Digite seu texto aqui...</textarea>
+<select id="idioma">
+  <option value="pt-BR">Português (Brasil)</option>
+  <option value="en-US">English (United States)</option>
+</select>
+<button onclick="falar()">Falar</button>
+
+<script>
+function falar() {
+  var texto = document.getElementById("texto").value;
+  var idiomaSelecionado = document.getElementById("idioma").value;
+  var synth = window.speechSynthesis;
+  var utterance = new SpeechSynthesisUtterance(texto);
+  utterance.lang = idiomaSelecionado;
+  synth.speak(utterance);
+}
+</script>
+
+</body>
+</html>

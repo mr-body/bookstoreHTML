@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geolocalização</title>
+</head>
+<body>
+<h1>Geolocalização do Dispositivo</h1>
+<p>Pressione o botão para obter sua localização:</p>
+<button onclick="getLocation()">Obter Localização</button>
+<p id="demo"></p>
+
+<script>
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    document.getElementById("demo").innerHTML = "Geolocalização não é suportada pelo seu navegador.";
+  }
+}
+
+function showPosition(position) {
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+  document.getElementById("demo").innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+}
+</script>
+</body>
+</html>

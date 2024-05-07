@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll Horizontal com Auto Ajuste</title>
+  <style>
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .scroll-content {
+      display: flex;
+    }
+
+    .item {
+      flex: 0 0 auto;
+      width: 200px; /* Largura de cada item */
+      height: 100px; /* Altura de cada item */
+      margin-right: 10px; /* Espaçamento entre os itens */
+      background-color: #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-container">
+    <div class="scroll-content">
+      <!-- Conteúdo a ser rolado -->
+      <div class="item">Item 1</div>
+      <div class="item">Item 2</div>
+      <div class="item">Item 3</div>
+      <!-- Adicione mais itens conforme necessário -->
+    </div>
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      adjustScroll();
+    });
+
+    window.addEventListener('resize', () => {
+      adjustScroll();
+    });
+
+    function adjustScroll() {
+      const scrollContainer = document.querySelector('.scroll-container');
+      const scrollContent = document.querySelector('.scroll-content');
+      
+      const containerWidth = scrollContainer.clientWidth;
+      const contentWidth = scrollContent.scrollWidth;
+      
+      if (contentWidth <= containerWidth) {
+        // Se o conteúdo couber dentro do contêiner, remova a barra de rolagem
+        scrollContainer.style.overflowX = 'hidden';
+      } else {
+        // Caso contrário, mantenha a barra de rolagem
+        scrollContainer.style.overflowX = 'auto';
+      }
+    }
+  </script>
+</body>
+</html>

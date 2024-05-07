@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exemplo de Impressão</title>
+<style>
+    /* Estilos para a página de impressão */
+    @media print {
+        /* Oculta o botão de impressão na página impressa */
+        #btnPrint {
+            display: none;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Conteúdo da página -->
+<h1 style="color: red;">Exemplo de Impressão</h1>
+<p>Este é um exemplo de página para demonstrar a funcionalidade de impressão.</p>
+
+<!-- Botão para imprimir -->
+<button id="btnPrint" onclick="printPage()">Imprimir Página</button>
+
+<script>
+function printPage() {
+    // Esconde o botão de impressão para não ser impresso
+    document.getElementById('btnPrint').style.display = 'none';
+    // Chama a função de impressão do navegador
+    window.print();
+    // Restaura a visibilidade do botão após a impressão
+    document.getElementById('btnPrint').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

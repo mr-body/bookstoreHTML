@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu com botão direito do mouse</title>
+    <style>
+        #custom-menu {
+            position: fixed;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px 0;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        #custom-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #custom-menu ul li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #custom-menu ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="custom-menu" class="hidden">
+        <ul>
+            <li>Opção 1</li>
+            <li>Opção 2</li>
+            <li>Opção 3</li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var customMenu = document.getElementById('custom-menu');
+
+            window.addEventListener('contextmenu', function (event) {
+                event.preventDefault();
+                customMenu.style.left = event.pageX + 'px';
+                customMenu.style.top = event.pageY + 'px';
+                customMenu.classList.remove('hidden');
+            });
+
+            window.addEventListener('click', function () {
+                customMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

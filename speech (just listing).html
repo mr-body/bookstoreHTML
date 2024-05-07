@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speech to Text</title>
+</head>
+<body>
+<h1>Speech to Text</h1>
+<div>
+  <label for="language-select">Select Language:</label>
+  <select id="language-select">
+    <option value="en-US">English</option>
+    <option value="pt-BR">Português (Brasil)</option>
+  </select>
+</div>
+<button id="toggle-btn">Start Listening</button>
+<button id="stop-btn">Stop Listening</button>
+<div id="result"></div>
+<script>
+let recognition; // variável global para manter a instância do reconhecimento
+
+// Verifica se o navegador suporta a API de reconhecimento de fala
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+  // Definir propriedades da API de reconhecimento de fala
+  recognition.interimResults = true; // Ativar resultados intermediários enquanto fala
+
+  // Evento chamado quando há resultados
+  recognition.onresult = function(event) {
+    const transcript = Array.from(event.results)
+                          .map(result => result[0].transcript)
+                          .join('');
+    document.getElementById('result').textContent = transcript;
+  };
+// Evento chamado quando o reconhecimento de fala termina
+recognition.onend = function() {
+  alert("Terminou de falar");
+};
+  // Evento chamado quando ocorre um erro
+  recognition.onerror = function(event) {
+    console.error('Speech recognition error detected: ', event.error);
+  };
+
+  // Evento de clique no botão de alternar
+  document.getElementById('toggle-btn').addEventListener('click', function() {
+    recognition.lang = document.getElementById('language-select').value; // Definir o idioma selecionado
+    recognition.start(); // Iniciar reconhecimento de fala
+
+  });
+
+  // Evento de clique no botão de parar
+  document.getElementById('stop-btn').addEventListener('click', function() {
+    recognition.stop(); // Parar reconhecimento de fala
+  });
+} else {
+  console.error('Speech recognition not supported on this browser.');
+}
+</script>
+</body>
+</html>

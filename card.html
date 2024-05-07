@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartão Digital</title>
+</head>
+<style>
+    #container-cartao {
+        position: relative;
+        max-height: 360px;
+        height: 370px;
+        margin: 10px;
+        width: 700px;
+    }
+
+    .card {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: none;
+        transform-style: preserve-3d;
+        transition: all 1.5s ease;
+        cursor: pointer;
+        background-image: url("../../image/icons/mapa.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .virar-cartao {
+        transform: rotateY(180deg);
+    }
+
+    #front {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0px 3px 10px #bebbbb;
+        border-radius: 10px;
+        backface-visibility: hidden;
+        background: rgba(40, 40, 40, 0.911);
+        color: #fff;
+        z-index: 1;
+    }
+
+    #front h2 {
+        position: absolute;
+        right: 0;
+        margin: 10px;
+        margin-right: 20px;
+    }
+
+    #front p {
+        position: absolute;
+        left: 4%;
+        bottom: 0;
+        font-size: 62.5%;
+    }
+
+    #front img {
+        width: 40px;
+        margin: 7px;
+    }
+
+    #front div {
+        margin: 20px;
+        margin-top: 40px;
+    }
+
+    #back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0px 3px 10px #bebbbb;
+        border-radius: 10px;
+        backface-visibility: hidden;
+        background: rgba(40, 40, 40, 0.911);
+        color: #fff;
+        transform: rotateY(180deg);
+    }
+
+    #back .fita {
+        background-color: black;
+        height: 40px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+</style>
+
+<body>
+    <div id="container-cartao">
+        <div class="card">
+
+            <div id="front">
+                <h2>Resstory.com</h2>
+                <div>
+                    <img src="image/icons/chip-logo.png" alt="">
+                    <h5>123 126 251 252 123</h5>
+                    <p>Walteralexandresantana@gmail.com</p>
+                </div>
+            </div>
+
+            <div id="back">
+                <div class="fita">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var card = document.querySelector('.card');
+            card.addEventListener('click', function () {
+                card.classList.toggle('virar-cartao');
+            });
+        });
+
+    </script>
+</body>
+
+</html>

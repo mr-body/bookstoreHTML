@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste de Conexão à Internet</title>
+</head>
+<body>
+  <h1>Teste de Conexão à Internet</h1>
+  <p id="status"></p>
+
+  <script>
+    // Verificar a conexão à Internet
+    function checkInternetConnection() {
+      fetch('https://www.google.com', { mode: 'no-cors' })
+        .then(function(response) {
+          if (response.ok || response.type === 'opaque') {
+            document.getElementById('status').innerText = 'Você está conectado à Internet.';
+          } else {
+            document.getElementById('status').innerText = 'Você está offline. Por favor, verifique sua conexão.';
+          }
+        })
+        .catch(function(error) {
+          document.getElementById('status').innerText = 'Erro ao verificar a conexão.';
+        });
+    }
+
+    // Verificar a conexão à Internet quando a página é carregada
+    window.onload = checkInternetConnection;
+
+    // Verificar a conexão à Internet quando há uma alteração na conexão
+    window.addEventListener('online', checkInternetConnection);
+    window.addEventListener('offline', checkInternetConnection);
+  </script>
+</body>
+</html>

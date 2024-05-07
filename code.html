@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Últimos Dígitos</title>
+<style>
+    .texto {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="texto" id="textoOriginal">1234567890</div>
+
+<div class="texto" id="ultimosDigitos"></div>
+
+<script>
+    // Obtém o texto original da div
+    var textoOriginal = document.getElementById('textoOriginal').innerText;
+
+    // Obtém os últimos 4 dígitos
+    var ultimosDigitos = textoOriginal.slice(-4);
+
+    // Substitui os caracteres anteriores aos últimos dígitos por asteriscos
+    var textoCensurado = "*".repeat(textoOriginal.length - ultimosDigitos.length) + ultimosDigitos;
+
+    // Exibe os últimos dígitos na div
+    document.getElementById('ultimosDigitos').innerText = "Últimos dígitos: " + textoCensurado;
+</script>
+
+</body>
+</html>

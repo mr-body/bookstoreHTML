@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detecção de Sistema Operacional</title>
+<script>
+    // Função para detectar o sistema operacional
+    function detectarSistemaOperacional() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Verificar se o agente do usuário contém alguma informação específica de um SO
+        if (/android/i.test(userAgent)) {
+            return "Android";
+        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return "iOS";
+        } else if (/windows phone/i.test(userAgent)) {
+            return "Windows Phone";
+        } else if (/windows/i.test(userAgent)) {
+            return "Windows";
+        } else if (/macintosh|mac os x/i.test(userAgent)) {
+            return "Mac OS X";
+        } else if (/linux/i.test(userAgent)) {
+            return "Linux";
+        } else {
+            return "SO não reconhecido";
+        }
+    }
+
+    // Função para exibir o sistema operacional detectado
+    function exibirSistemaOperacional() {
+        var sistemaOperacional = detectarSistemaOperacional();
+        document.getElementById("sistema-operacional").innerHTML = "Sistema Operacional: " + sistemaOperacional;
+    }
+</script>
+</head>
+<body>
+    <h1>Detecção de Sistema Operacional</h1>
+    <button onclick="exibirSistemaOperacional()">Detectar Sistema Operacional</button>
+    <p id="sistema-operacional"></p>
+</body>
+</html>

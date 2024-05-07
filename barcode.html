@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Código de Barras</title>
+  <!-- Inclua a biblioteca JsBarcode -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+<!-- Div onde o código de barras será renderizado -->
+<svg class="barcode"
+    jsbarcode-format="code128"
+    jsbarcode-value="123456789012"
+    jsbarcode-textmargin="0"
+    jsbarcode-fontoptions="bold">
+</svg>
+
+<!-- Campo de entrada de texto para o valor do código de barras -->
+<label for="codigo">Digite o valor do código de barras:</label>
+<input type="text" id="codigo" placeholder="Insira o valor do código de barras">
+
+<!-- Select com diferentes tipos de formatos -->
+<label for="formato">Selecione o formato do código de barras:</label>
+<select id="formato">
+    <option value="upc">UPC</option>
+    <option value="ean8">EAN-8</option>
+    <option value="ean13">EAN-13</option>
+    <option value="code128">Code 128</option>
+    <!-- Adicione outros formatos conforme necessário -->
+</select>
+
+<!-- Botão para gerar o código de barras -->
+<button onclick="gerarCodigo()">Gerar Código de Barras</button>
+
+<script>
+// Função para gerar o código de barras com base no valor e no formato selecionados
+function gerarCodigo() {
+    var valorCodigo = document.getElementById('codigo').value;
+    var formatoSelecionado = document.getElementById('formato').value;
+    JsBarcode(".barcode", valorCodigo, {
+        format: formatoSelecionado
+    });
+}
+
+// Inicializa o código de barras quando a página é carregada
+window.onload = function() {
+    gerarCodigo();
+};
+
+
+JsBarcode(".barcode").init();
+</script>
+</body>
+</html>

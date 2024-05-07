@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Texto para Voz</title>
+</head>
+<body>
+
+<input type="file" id="arquivo" accept=".txt">
+<button onclick="lerArquivo()">Selecionar Arquivo</button>
+<button onclick="falar()">Falar</button>
+
+<script>
+let textoParaFalar = '';
+
+function lerArquivo() {
+  const fileInput = document.getElementById('arquivo');
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    textoParaFalar = event.target.result;
+  };
+
+  reader.readAsText(file);
+}
+
+function falar() {
+  if (textoParaFalar === '') {
+    alert('Por favor, selecione um arquivo de texto.');
+    return;
+  }
+
+  var synth = window.speechSynthesis;
+  var utterance = new SpeechSynthesisUtterance(textoParaFalar);
+  synth.speak(utterance);
+}
+</script>
+
+</body>
+</html>
+

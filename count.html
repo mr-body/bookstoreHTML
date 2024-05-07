@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contagem Regressiva</title>
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.countdown-container {
+  text-align: center;
+}
+
+#countdown {
+  font-size: 24px;
+}
+
+</style>
+<body>
+<div class="countdown-container">
+  <h1>Contagem Regressiva para 25/07/2025</h1>
+  <div id="countdown"></div>
+</div>
+<script>
+    // Data final da contagem regressiva
+const endDate = new Date('2025-07-25T00:00:00');
+
+function updateCountdown() {
+  const now = new Date();
+  const difference = endDate - now;
+
+  if (difference <= 0) {
+    clearInterval(timer);
+    document.getElementById('countdown').innerHTML = 'Chegou o dia!';
+  } else {
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+}
+
+// Chama a função para iniciar e atualizar a contagem regressiva a cada segundo
+updateCountdown();
+const timer = setInterval(updateCountdown, 1000);
+
+</script>
+</body>
+</html>

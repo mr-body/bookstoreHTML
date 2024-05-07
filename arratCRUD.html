@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manipulação de Arrays com JavaScript</title>
+</head>
+<body>
+
+<h1>Manipulação de Arrays com JavaScript</h1>
+
+<p>Adicionar novo elemento:</p>
+<input type="text" id="novoElemento">
+<button onclick="adicionarElemento()">Adicionar</button>
+
+<ul id="arrayList"></ul>
+
+<script>
+// Array inicial vazio
+var meuArray = [];
+
+// Função para adicionar elemento ao array e atualizar a lista na página
+function adicionarElemento() {
+    var novoElemento = document.getElementById("novoElemento").value;
+    if (novoElemento.trim() !== "") {
+        meuArray.push(novoElemento);
+        atualizarLista();
+        document.getElementById("novoElemento").value = ""; // Limpar o campo de texto
+    }
+}
+
+// Função para deletar elemento do array e atualizar a lista na página
+function deletarElemento(indice) {
+    if (indice >= 0 && indice < meuArray.length) {
+        meuArray.splice(indice, 1);
+        atualizarLista();
+        document.getElementById("indiceElemento").value = ""; // Limpar o campo de texto
+    } else {
+        alert("Índice inválido!");
+    }
+}
+
+// Função para atualizar a lista na página
+function atualizarLista() {
+    let index = 0
+    var lista = document.getElementById("arrayList");
+    lista.innerHTML = ""; // Limpar a lista antes de atualizar
+
+    meuArray.forEach(function(elemento) {
+        var li = document.createElement("li");
+        li.innerHTML = 
+        ` <b>${elemento}</b> -- <button onclick="deletarElemento(${index})">Delete</button>`;
+        lista.appendChild(li);
+
+        index++;
+    });
+}
+</script>
+
+</body>
+</html>

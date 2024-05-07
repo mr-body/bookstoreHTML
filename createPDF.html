@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerar PDF com HTML e JavaScript</title>
+  <!-- Inclua a biblioteca html2pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <div id="page">
+    <h1>Meu PDF Gerado com HTML e JavaScript</h1>
+  <p>Este é um parágrafo de exemplo que será incluído no PDF.</p>
+  </div>
+
+  <!-- Botão para gerar o PDF -->
+  <button id="gerar-pdf">Gerar PDF</button>
+
+  <script>
+    // Quando o botão for clicado, o PDF será gerado
+    document.getElementById('gerar-pdf').addEventListener('click', function() {
+      // Elemento que será convertido em PDF (no caso, todo o corpo do documento)
+      const elemento = document.getElementById('page');
+      // Opções para a conversão
+      const opcoes = {
+        margin: 0.5,
+        filename: 'meu_pdf.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      // Chamando a função para gerar o PDF
+      html2pdf()
+        .from(elemento)
+        .set(opcoes)
+        .save();
+    });
+  </script>
+</body>
+</html>

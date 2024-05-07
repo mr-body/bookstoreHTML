@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrastar e soltar uma imagem</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  #drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px;
+    cursor: pointer; /* Adicionado */
+    position: relative; /* Adicionado */
+  }
+
+  #loading-text {
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+  }
+
+  .button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #image-preview {
+    display: none;
+    text-align: center;
+    margin: 20px;
+  }
+
+  #preview {
+    max-width: 100%;
+    max-height: 300px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div id="drop-area" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="dropImage(event)">
+  <h1>Arraste e solte uma imagem aqui</h1>
+  <p>Ou clique para selecionar uma imagem</p>
+  <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)" hidden>
+  <label class="button" for="fileElem">Selecionar uma imagem</label>
+</div>
+
+
+<p id="loading-text" style="display:none;">Loading...</p> <!-- Adicionado -->
+
+<div id="image-preview">
+  <h2>Preview da imagem</h2>
+  <img id="preview" src="#" alt="Imagem preview">
+</div>
+
+<script>
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function dragEnter(event) {
+  event.preventDefault();
+  document.getElementById('drop-area').style.border = '2px solid green';
+  document.getElementById('drop-area').style.cursor = 'copy'; // Modificado
+}
+
+function dragLeave(event) {
+  event.preventDefault();
+  document.getElementById('drop-area').style.border = '2px dashed #ccc';
+  document.getElementById('drop-area').style.cursor = 'default'; // Modificado
+}
+
+function dropImage(event) {
+  event.preventDefault();
+  document.getElementById('drop-area').style.border = '2px dashed #ccc';
+  document.getElementById('loading-text').style.display = 'block'; // Adicionado
+  var files = event.dataTransfer.files;
+  handleFiles(files);
+}
+
+function handleFiles(files) {
+  var preview = document.getElementById('preview');
+  var file = files[0];
+  var reader = new FileReader();
+
+  reader.onload = function(event) {
+    preview.src = event.target.result;
+    // document.getElementById('drop-area').style.display = 'none';
+    document.getElementById('image-preview').style.display = 'block';
+    document.getElementById('loading-text').style.display = 'none'; // Adicionado
+  }
+
+  reader.readAsDataURL(file);
+}
+</script>
+
+</body>
+</html>

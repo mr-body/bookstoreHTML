@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reproduzir Áudio</title>
+</head>
+<body>
+
+<button id="playButton">Reproduzir Áudio</button>
+
+<script>
+// Crie um elemento de áudio
+var audio = new Audio('./audio.mp3');
+
+// Selecione o botão
+var button = document.getElementById('playButton');
+
+// Adicione um evento de clique ao botão
+button.addEventListener('click', function() {
+  // Quando o botão é clicado, reproduz o áudio
+  audio.play();
+});
+</script>
+
+</body>
+</html>

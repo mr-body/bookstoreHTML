@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Sharing</title>
+</head>
+
+<body>
+    <h1>Screen Sharing</h1>
+    <video id="screen" autoplay controls></video>
+    <button onclick="startSharing()">Start Sharing</button>
+    <script>
+        async function startSharing() {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                const videoElement = document.getElementById('screen');
+                videoElement.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing screen:', err);
+            }
+        }
+    </script>
+</body>
+
+</html>

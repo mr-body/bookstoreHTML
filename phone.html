@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formatação de Texto</title>
+<style>
+    .texto {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="texto" id="textoOriginal">930626436</div>
+
+<div class="texto" id="textoFormatado"></div>
+
+<script>
+    // Obtém o texto original da div
+    var textoOriginal = document.getElementById('textoOriginal').innerText;
+
+    // Formata o texto em grupos de 3 caracteres
+    var textoFormatado = '';
+    for (var i = 0; i < textoOriginal.length; i += 3) {
+        textoFormatado += textoOriginal.slice(i, i + 3) + ' ';
+    }
+
+    // Exibe o texto formatado na div
+    document.getElementById('textoFormatado').innerText = "Texto formatado: " + textoFormatado;
+</script>
+
+</body>
+</html>

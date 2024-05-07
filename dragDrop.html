@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .container-column {
+            width: 50%;
+            min-height: 200px;
+            border: 2px solid #ccc;
+        }
+
+        .item {
+            margin: 5px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #999;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="left-container" class="container-column" ondrop="drop(event, 'left')" ondragover="allowDrop(event)">
+            <!-- <div id="item1" class="item" draggable="true" ondragstart="drag(event)">Item 1</div> -->
+        </div>
+        <div id="right-container" class="container-column" ondrop="drop(event, 'right')" ondragover="allowDrop(event)">
+        </div>
+    </div>
+
+    <fieldset>
+        <legend>Adicionar Novo Item</legend>
+        <input type="text" id="new-item-text">
+        <button onclick="adicionarNovoItem()">Adicionar</button>
+    </fieldset>
+
+    <button onclick="gerarArrays()">Gerar Arrays</button>
+
+    <script>
+        // Função para permitir soltar itens
+        function allowDrop(event) {
+            event.preventDefault();
+            console.log('Allow drop');
+        }
+
+        // Função para arrastar o item
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        // Função para soltar o item
+        function drop(event, destination) {
+            event.preventDefault();
+            console.log('Drop event triggered');
+            var data = event.dataTransfer.getData("text");
+            var draggedItem = document.getElementById(data);
+
+            // Verifica o destino e move o item para a array correspondente
+            if (destination === 'left') {
+                document.getElementById("left-container").appendChild(draggedItem);
+            } else if (destination === 'right') {
+                document.getElementById("right-container").appendChild(draggedItem);
+            }
+        }
+
+        // Função para adicionar novo item à primeira coluna
+        function adicionarNovoItem() {
+            var newItemText = document.getElementById('new-item-text').value;
+            if (newItemText.trim() !== '') {
+                var newItem = document.createElement('div');
+                newItem.className = 'item';
+                newItem.id = 'item' + Math.floor(Math.random() * 100000);
+                newItem.draggable = true;
+                newItem.innerText = newItemText;
+                newItem.addEventListener('dragstart', drag); // Adiciona evento de arrastar
+                document.getElementById('left-container').appendChild(newItem);
+                document.getElementById('new-item-text').value = '';
+            }
+        }
+
+
+        // Função para gerar arrays
+        function gerarArrays() {
+            var leftItems = Array.from(document.getElementById('left-container').children).map(item => item.innerText);
+            var rightItems = Array.from(document.getElementById('right-container').children).map(item => item.innerText);
+
+            console.log("Array da primeira coluna:", leftItems);
+            console.log("Array da segunda coluna:", rightItems);
+        }
+    </script>
+
+</body>
+
+</html>

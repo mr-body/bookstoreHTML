@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Push.js Example</title>
+  <!-- Inclua o Push.js via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push.js"></script>
+</head>
+<body>
+  <h1>Push.js Example</h1>
+
+  <button onclick="sendNotification()">Enviar Notificação</button>
+
+  <script>
+    // Função para enviar uma notificação
+    function sendNotification() {
+      Push.create("Título da Notificação", {
+        body: "Corpo da Notificação",
+        icon: "caminho/para/icone.png", // URL do ícone da notificação
+        timeout: 4000, // Tempo em milissegundos antes da notificação desaparecer automaticamente
+        onClick: function () {
+          // Função a ser executada quando a notificação for clicada
+          window.focus();
+          this.close();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

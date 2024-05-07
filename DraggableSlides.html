@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draggable Slides</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .container {
+        display: flex;
+        overflow-x: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+    }
+
+    .slide {
+        flex: 0 0 auto;
+        width: 100%;
+        scroll-snap-align: start;
+        height: 100%;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+    }
+
+    .menu {
+        display: flex;
+        background-color: #333;
+        padding: 10px;
+    }
+
+    .menu-item {
+        color: white;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .menu-item.active {
+        color: green;
+    }
+</style>
+</head>
+<body>
+<div class="menu">
+    <div class="menu-item active" onclick="changeSlide(0)">Slide 1</div>
+    <div class="menu-item" onclick="changeSlide(1)">Slide 2</div>
+    <div class="menu-item" onclick="changeSlide(2)">Slide 3</div>
+    <div class="menu-item" onclick="changeSlide(3)">Slide 4</div>
+    <div class="menu-item" onclick="changeSlide(4)">Slide 5</div>
+</div>
+
+<div class="container">
+    <div class="slide">Slide 1</div>
+    <div class="slide">Slide 2</div>
+    <div class="slide">Slide 3</div>
+    <div class="slide">Slide 4</div>
+    <div class="slide">Slide 5</div>
+</div>
+
+<script>
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+    const container = document.querySelector('.container');
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        updateActiveMenuItem();
+    });
+
+    container.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    container.addEventListener('mouseup', () => {
+        isDragging = false;
+
+        updateActiveMenuItem();
+    });
+
+    container.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2; // Adjust scrolling speed
+        container.scrollLeft = scrollLeft - walk;
+    });
+
+    function changeSlide(index) {
+        container.scrollLeft = index * container.offsetWidth;
+
+        updateActiveMenuItem();
+    }
+
+    function updateActiveMenuItem() {
+        const scrollPosition = container.scrollLeft;
+        const slideWidth = container.offsetWidth;
+        const activeIndex = Math.round(scrollPosition / slideWidth);
+        menuItems.forEach((item, index) => {
+            if (index === activeIndex) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pressionamento Longo</title>
+</head>
+<body>
+
+<button id="meuBotao">Pressione e Segure</button>
+
+<script>
+let botao = document.getElementById("meuBotao");
+let temporizadorPressionado;
+
+botao.addEventListener('mousedown', function() {
+    temporizadorPressionado = setTimeout(function() {
+        alert("Você pressionou o botão por muito tempo!");
+    }, 500); // Tempo em milissegundos (2 segundos neste exemplo)
+});
+
+botao.addEventListener('mouseup', function() {
+    clearTimeout(temporizadorPressionado);
+});
+
+</script>
+
+</body>
+</html>

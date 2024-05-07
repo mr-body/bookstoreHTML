@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verificação de Dispositivo Móvel</title>
+<script>
+    // Função para verificar se o dispositivo é móvel
+    function verificarDispositivoMovel() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Verificar se o agente do usuário contém alguma informação específica de um dispositivo móvel
+        if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
+            return true; // É um dispositivo móvel
+        } else {
+            return false; // Não é um dispositivo móvel
+        }
+    }
+
+    // Função para exibir o resultado da verificação
+    function exibirResultado() {
+        var resultado = verificarDispositivoMovel();
+        var mensagem = resultado ? "Você está acessando este site de um dispositivo móvel." : "Você está acessando este site de um computador.";
+        document.getElementById("resultado").innerHTML = mensagem;
+    }
+</script>
+</head>
+<body>
+    <h1>Verificação de Dispositivo Móvel</h1>
+    <button onclick="exibirResultado()">Verificar Dispositivo</button>
+    <p id="resultado"></p>
+</body>
+</html>

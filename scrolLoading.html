@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinite Scrolling Example</title>
+  <style>
+    /* Some basic styles for the content */
+    #content {
+      margin-top: 20px;
+    }
+    .item {
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <!-- Content will be dynamically added here -->
+  </div>
+
+  <script>
+    // Sample array of items
+    const items = Array.from({ length: 100 }, (_, i) => `Item ${i + 1}`);
+
+    // Function to render items
+    function renderItems(start, end) {
+      const contentDiv = document.getElementById('content');
+      for (let i = start; i < end; i++) {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+        itemDiv.textContent = items[i];
+        contentDiv.appendChild(itemDiv);
+      }
+    }
+
+    // Initial render
+    renderItems(0, 10);
+
+    // Function to load more items when scrolling
+    window.addEventListener('scroll', () => {
+      const contentDiv = document.getElementById('content');
+      const scrollTop = document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      if (scrollTop + windowHeight >= documentHeight - 100) {
+        // Load more items
+        const currentItemCount = contentDiv.children.length;
+        const newEndIndex = Math.min(currentItemCount + 10, items.length);
+        renderItems(currentItemCount, newEndIndex);
+      }
+    });
+  </script>
+</body>
+</html>

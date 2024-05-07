@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag and Drop</title>
+<style>
+.container {
+  display: flex;
+}
+
+.container-column {
+  width: 50%;
+  min-height: 200px;
+  border: 2px solid #ccc;
+}
+
+.item {
+  margin: 5px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #999;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="left-container" class="container-column" ondrop="drop(event, 'left')" ondragover="allowDrop(event)"></div>
+  <div id="right-container" class="container-column" ondrop="drop(event, 'right')" ondragover="allowDrop(event)"></div>
+</div>
+
+<div id="item1" class="item" draggable="true" ondragstart="drag(event)">Item 1</div>
+<div id="item2" class="item" draggable="true" ondragstart="drag(event)">Item 2</div>
+<div id="item3" class="item" draggable="true" ondragstart="drag(event)">Item 3</div>
+
+<script>
+// Função para permitir soltar itens
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+// Função para arrastar o item
+function drag(event) {
+  event.dataTransfer.setData("text", event.target.id);
+}
+
+// Função para soltar o item
+function drop(event, destination) {
+  event.preventDefault();
+  var data = event.dataTransfer.getData("text");
+  var draggedItem = document.getElementById(data);
+  
+  // Verifica o destino e move o item para a array correspondente
+  if (destination === 'left') {
+    document.getElementById("left-container").appendChild(draggedItem);
+  } else if (destination === 'right') {
+    document.getElementById("right-container").appendChild(draggedItem);
+  }
+}
+</script>
+
+</body>
+</html>

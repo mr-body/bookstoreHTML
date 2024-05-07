@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciais dos Nomes</title>
+</head>
+<body>
+
+<div class="texto" id="textoOriginal">Walter Alexandre sabatiao Santana</div>
+
+<div class="texto" id="iniciaisNomes"></div>
+
+<script>
+    // Obtém o texto original da div
+    var textoOriginal = document.getElementById('textoOriginal').innerText;
+
+    // Divide o texto em palavras
+    var palavras = textoOriginal.split(' ');
+
+    // Obtém a primeira letra do primeiro nome
+    var primeiraLetraPrimeiroNome = palavras[0].charAt(0).toUpperCase();
+
+    // Obtém a primeira letra do último nome
+    var ultimaPalavra = palavras[palavras.length - 1];
+    var primeiraLetraUltimoNome = ultimaPalavra.charAt(0).toUpperCase();
+
+    // Combinação das iniciais
+    var iniciais = primeiraLetraPrimeiroNome + primeiraLetraUltimoNome;
+
+    // Exibe as iniciais com a cor de fundo correspondente
+    document.getElementById('iniciaisNomes').innerHTML = "<span>" + iniciais + "</span>";
+</script>
+
+</body>
+</html>

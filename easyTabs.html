@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="tabContainer">
+        <div class="buttonContainer">
+            <button onclick="showPanel(0,'#ffff')">
+                <span>Inicio</span>
+            </button>
+            <button onclick="showPanel(1,'blue')">
+                <span>Dados</span>
+            </button>
+            <button onclick="showPanel(2,'green')">
+                <span>Compras</span>
+            </button>
+            <button onclick="showPanel(3,'orange')">
+                <span>Dividas</span>
+            </button>
+        </div>
+
+
+
+        <div class="tabPanel">
+            <h1>Pagina 1</h1>
+        </div>
+        <div class="tabPanel">
+            <h1>Pagina 2</h1>
+        </div>
+        <div class="tabPanel">
+            <h1>Pagina 3</h1>
+        </div>
+        <div class="tabPanel">
+            <h1>Pagina 4</h1>
+        </div>
+    </div>
+    <script>
+        var tabButtons = document.querySelectorAll(".tabContainer .buttonContainer button");
+        var tabPanels = document.querySelectorAll(".tabContainer .tabPanel");
+
+        function showPanel(panelIndex, colorCode) {
+            tabButtons.forEach(function (node) {
+                node.style.backgroundColor = "";
+                node.style.color = "";
+                node.style.border = ""; // Limpar o estilo da borda completamente
+            });
+            tabButtons[panelIndex].style.backgroundColor = "rgba(255, 166, 0, 0.133)";
+            tabButtons[panelIndex].style.borderColor = "orange"; // Definir apenas a cor da borda
+            tabButtons[panelIndex].style.borderWidth = "2px"; // Definir a largura da borda
+            tabButtons[panelIndex].style.borderStyle = "solid"; // Definir o estilo da borda
+            tabButtons[panelIndex].style.color = "orange";
+            tabPanels.forEach(function (node) {
+                node.style.display = "none";
+            });
+            tabPanels[panelIndex].style.display = "block";
+            tabPanels[panelIndex].style.backgroundColor = colorCode;
+        }
+
+        showPanel(0, '#ffffff');
+
+    </script>
+</body>
+
+</html>

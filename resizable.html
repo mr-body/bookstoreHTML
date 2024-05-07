@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resizable Sidebar</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .sidebar {
+      width: 500px;
+      background-color: #333;
+      color: white;
+      height: 100%;
+      overflow: hidden;
+      float: left;
+      position: relative;
+    }
+
+    .content {
+      height: 100%;
+      overflow: auto;
+      margin-left: 200px; /* Sidebar width */
+      background-color: #f0f0f0;
+    }
+
+    .resizer {
+      width: 20px;
+      cursor: ew-resize;
+      background-color: #55555500;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .resizer::after{
+        content: '';
+        background-color: #c7c7c7d8;
+        width: 90px;
+        height: 90px;
+        border-radius: 9px;
+        position: absolute;
+        left: 50%;
+        top: calc(50% - 45px);
+        z-index: 4;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    Sidebar Content
+    <div class="resizer" id="resizer"></div>
+  </div>
+  <div class="content">
+    Main Content
+  </div>
+  <script>
+    const resizer = document.getElementById('resizer');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('.content');
+
+    let isResizing = false;
+
+    resizer.addEventListener('mousedown', function (e) {
+      isResizing = true;
+      document.addEventListener('mousemove', resize);
+      document.addEventListener('mouseup', stopResize);
+    });
+
+    function resize(e) {
+      if (isResizing) {
+        const sidebarWidth = e.clientX;
+        sidebar.style.width = sidebarWidth + 'px';
+        content.style.marginLeft = sidebarWidth + 'px';
+      }
+    }
+
+    function stopResize() {
+      isResizing = false;
+      document.removeEventListener('mousemove', resize);
+    }
+  </script>
+</body>
+</html>

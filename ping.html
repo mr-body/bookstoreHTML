@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Ping</title>
+  <!-- Importa o JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <span id="status">Aguardando resultado do ping...</span>
+
+  <script>
+    function ping(host, port, pong) {
+      var started = new Date().getTime();
+      var http = new XMLHttpRequest();
+
+      http.open("GET", "http://" + host + ":" + port, true);
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          var ended = new Date().getTime();
+          var milliseconds = ended - started;
+          if (pong != null) {
+            pong(milliseconds);
+          }
+        }
+      };
+      try {
+        http.send(null);
+      } catch (exception) {
+        console.error("Erro na conexão:", exception);
+        document.getElementById("status").innerText = "Erro na conexão: " + exception;
+      }
+    }
+
+    ping("google.com", "80", function (m) {
+      var statusSpan = document.getElementById("status");
+      statusSpan.innerText = "Levou " + m + " milissegundos.";
+    });
+  </script>
+
+</body>
+
+</html>

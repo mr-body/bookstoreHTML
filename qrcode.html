@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo QR Code</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <!-- Input para inserir o texto -->
+    <label for="texto">Texto:</label>
+    <input type="text" id="texto" name="texto">
+    <button onclick="gerarQRCode()">Gerar QR Code</button>
+
+    <!-- Div onde o código QR será gerado -->
+    <div id="qrcode"></div>
+
+    <script>
+        function gerarQRCode() {
+            document.getElementById("qrcode").innerHTML = ""
+            // Obtendo o valor do input
+            var texto = document.getElementById("texto").value;
+
+            // Instanciando um objeto QRCode com a div onde o código será renderizado
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                width: 200,
+                height: 200
+            });
+
+            // Chamando o método makeCode para gerar o QR Code com o texto inserido pelo usuário
+            qrcode.makeCode(texto);
+        }
+    </script>
+</body>
+</html>

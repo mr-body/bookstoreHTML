@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabela de Sabores Selecionados</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<table id="tabela">
+    <thead>
+        <tr>
+            <th><button id="btnSelecionar" onclick="alternarSelecao()">Selecionar Tudo</button></th>
+            <th>Nome</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="checkbox" class="checkbox"></td>
+            <td>Sabor 1</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="checkbox"></td>
+            <td>Sabor 2</td>
+            <td>15</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="checkbox"></td>
+            <td>Sabor 3</td>
+            <td>20</td>
+        </tr>
+    </tbody>
+</table>
+
+<button onclick="salvar()">Salvar</button>
+
+<script>
+    let estadoBotao = 0;
+
+    function alternarSelecao() {
+        const checkboxes = document.querySelectorAll('.checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = estadoBotao === 0 ? true : false;
+        });
+
+        document.getElementById('btnSelecionar').textContent = estadoBotao === 0 ? "Desselecionar Tudo" : "Selecionar Tudo";
+        estadoBotao = estadoBotao === 0 ? 1 : 0;
+    }
+
+    function salvar() {
+        const checkboxes = document.querySelectorAll('.checkbox');
+        const linhasSelecionadas = [];
+
+        checkboxes.forEach((checkbox, index) => {
+            if (checkbox.checked) {
+                const row = checkbox.parentNode.parentNode;
+                const nome = row.cells[1].textContent;
+                const total = row.cells[2].textContent;
+                linhasSelecionadas.push({ nome, total });
+                // row.style.display = 'none'; // Oculta a linha selecionada
+            }
+        });
+
+        console.log(linhasSelecionadas);
+    }
+</script>
+
+</body>
+</html>

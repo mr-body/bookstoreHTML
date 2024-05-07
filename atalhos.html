@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teclas de Atalho</title>
+</head>
+<body>
+
+<h1>Pressione as teclas de atalho</h1>
+
+<script>
+document.addEventListener('keydown', function(event) {
+    // Verifica se a tecla pressionada é a combinação de Ctrl + S
+    if (event.ctrlKey && event.key === 's') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou Ctrl + S');
+    }
+    // Verifica se a tecla pressionada é a combinação de Ctrl + J
+    if (event.ctrlKey && event.key === 'j') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou Ctrl + J');
+    }
+    // Verifica se a tecla pressionada é F1
+    if (event.key === 'F1') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou F1');
+    }
+    // Verifica se a tecla pressionada é F2
+    if (event.key === 'F2') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou F2');
+    }
+    // Verifica se a tecla pressionada é F3
+    if (event.key === 'F3') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou F3');
+    }
+    // Verifica se a tecla pressionada é F4
+    if (event.key === 'F4') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou F4');
+    }
+    // Verifica se a tecla pressionada é F5
+    if (event.key === 'F5') {
+        event.preventDefault(); // Previne o comportamento padrão do navegador
+        alert('Você pressionou F5');
+    }
+});
+</script>
+
+</body>
+</html>
