@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alterar Cor do Tema</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0; /* Cor de fundo padrão */
+      color: #333; /* Cor de texto padrão */
+      transition: background-color 0.3s, color 0.3s; /* Transição suave */
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Alterar Cor do Tema</h1>
+  <label for="colorPicker">Escolha uma cor:</label>
+  <input type="color" id="colorPicker">
+</div>
+
+<script>
+  // Selecionando o input de cor
+  const colorPicker = document.getElementById('colorPicker');
+
+  // Adicionando um ouvinte de evento para quando a cor for alterada
+  colorPicker.addEventListener('change', function() {
+    // Obtendo o valor da cor selecionada
+    const selectedColor = colorPicker.value;
+
+    // Aplicando a cor selecionada ao corpo da página e a outras áreas que você queira
+    document.body.style.backgroundColor = selectedColor;
+    // Você pode adicionar mais elementos para mudar a cor, como texto, botões, etc.
+  });
+</script>
+
+</body>
+</html>

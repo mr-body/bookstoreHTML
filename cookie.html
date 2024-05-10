@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Example</title>
+</head>
+<body>
+
+<label for="nameInput">Digite seu nome:</label>
+<input type="text" id="nameInput">
+<button onclick="saveName()">Salvar Nome</button>
+
+<div id="nameDisplay"></div>
+
+<button onclick="showCookies()">Mostrar Cookies</button>
+<div id="cookiesDisplay"></div>
+
+<script>
+function saveName() {
+  var name = document.getElementById("nameInput").value;
+  var expirationDate = new Date();
+  expirationDate.setFullYear(expirationDate.getFullYear() + 2); // Definindo a data de expiração para 2 anos a partir de agora
+  document.cookie = "cookie_Name=" + name + "; expires=" + expirationDate.toUTCString();
+  document.getElementById("nameDisplay").innerText = "Nome salvo: " + name;
+}
+
+function showCookies() {
+  var cookies = document.cookie.split("; ");
+  var cookiesDisplay = "";
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].split("=");
+    cookiesDisplay += cookie[0] + ": " + cookie[1] + "<br>";
+  }
+  document.getElementById("cookiesDisplay").innerHTML = cookiesDisplay;
+}
+</script>
+
+</body>
+</html>

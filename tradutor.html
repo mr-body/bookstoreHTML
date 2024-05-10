@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Translation App</title>
+</head>
+<body>
+
+  <textarea id="textareaFrom" placeholder="Enter text to translate"></textarea>
+  <select class="selectFrom">
+    <!-- Options will be inserted dynamically by JavaScript -->
+  </select>
+  <select class="selectTo">
+    <!-- Options will be inserted dynamically by JavaScript -->
+  </select>
+  <button id="btnTranslate">Translate</button>
+  <br>
+  <textarea id="textareaTo" placeholder="Translated text"></textarea>
+
+  <script>
+    const textareaFrom = document.querySelector("#textareaFrom");
+    const textareaTo = document.querySelector("#textareaTo");
+    const btnTranslate = document.querySelector("#btnTranslate");
+    const selects = document.querySelectorAll("select");
+
+    const countries = {
+      "en-GB": "Inglês",
+      "es-ES": "Espanhol",
+      "pt-BR": "Português",
+      "zh-CN": "Chinês",
+      "ko-KO": "Coreano",
+      "it-ELE": "Italiano",
+      "ja-JA": "Japonês",
+      "ru-RU": "Russo",
+    };
+
+    selects.forEach((tag) => {
+      for (let country in countries) {
+        let selected;
+        if (tag.className.includes("selectFrom") && country == "pt-BR") {
+          selected = "selected";
+        } else if (tag.className.includes("selectTo") && country == "en-GB") {
+          selected = "selected";
+        }
+
+        const option = `<option value="${country}" ${selected}>${countries[country]}</option>`;
+
+        tag.insertAdjacentHTML("beforeend", option);
+      }
+    });
+
+    btnTranslate.addEventListener("click", () => {
+      if (textareaFrom.value) {
+        loadTranslation();
+      } else {
+        textareaTo.value = "";
+      }
+    });
+
+    function loadTranslation() {
+      fetch(
+        `https://api.mymemory.translated.net/get?q=${textareaFrom.value}&langpair=${selects[0].value}|${selects[1].value}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          textareaTo.value = data.responseData.translatedText;
+        });
+    }
+  </script>
+
+</body>
+</html>

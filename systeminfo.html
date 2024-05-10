@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detecção de Sistema e Navegador</title>
+</head>
+<body>
+<div id="info"></div>
+
+<script>
+window.onload = function() {
+    var systemInfo = getSystemInfo();
+    var browserInfo = getBrowserInfo();
+
+    var infoDiv = document.getElementById("info");
+    infoDiv.innerHTML = "<p><strong>Sistema:</strong> " + systemInfo + "</p>";
+    infoDiv.innerHTML += "<p><strong>Navegador:</strong> " + browserInfo + "</p>";
+};
+
+function getSystemInfo() {
+    var userAgent = navigator.userAgent;
+    if (userAgent.indexOf("Windows") != -1) {
+        return "Windows";
+    } else if (userAgent.indexOf("Macintosh") != -1) {
+        return "Macintosh";
+    } else if (userAgent.indexOf("Linux") != -1) {
+        return "Linux";
+    } else if (userAgent.indexOf("Android") != -1) {
+        return "Android";
+    } else if (userAgent.indexOf("iOS") != -1 || userAgent.indexOf("iPhone") != -1 || userAgent.indexOf("iPad") != -1 || userAgent.indexOf("iPod") != -1) {
+        return "iOS";
+    } else {
+        return "Outro";
+    }
+}
+
+function getBrowserInfo() {
+    var userAgent = navigator.userAgent;
+    if (userAgent.indexOf("Chrome") != -1) {
+        return "Google Chrome";
+    } else if (userAgent.indexOf("Firefox") != -1) {
+        return "Mozilla Firefox";
+    } else if (userAgent.indexOf("Safari") != -1 && userAgent.indexOf("Chrome") == -1) {
+        return "Safari";
+    } else if ((userAgent.indexOf("MSIE") != -1 || userAgent.indexOf("Trident/") != -1) && userAgent.indexOf("Edge") != -1) {
+        return "Microsoft Edge";
+    } else if (userAgent.indexOf("Edge") != -1) {
+        return "Microsoft Edge (Chromium)";
+    } else {
+        return "Outro";
+    }
+}
+</script>
+</body>
+</html>
