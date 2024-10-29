@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Without Bootstrap</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+    <style>
+        #printFrame {
+            display: none; /* Oculta o iframe */
+        }
+        #summernote {
+            width: 794px; /* Largura da folha A4 em pixels */
+            height: 1123px; /* Altura da folha A4 em pixels */
+            padding: 15px; /* Padding de 15px */
+            box-sizing: border-box; /* Inclui o padding na largura total */
+        }
+    </style>
+</head>
+<body>
+    <div id="summernote"></div>
+    <button id="printBtn">Print</button>
+    <iframe id="printFrame"></iframe> <!-- Iframe oculto -->
+
+    <script>
+        $(document).ready(function() {
+            var markdownText = `
+                <h4 style="text-align: center;">
+                    <span style="font-weight: normal;">Republica de Angola</span>
+                </h4>
+                <h4 style="text-align: center;">
+                    <span style="font-weight: normal;">Governo provincial de Launda</span>
+                </h4>
+                <h4 style="text-align: center;">
+                    <span style="font-weight: normal;">Ministerio da educacao</span>
+                </h4>
+                <h2 style="text-align: center;">RELATORIO DE HOJE</h2>
+                <p style="text-align: left;">Para p sr. <b>Walter Alexandre Santana.</b></p>
+                <p style="text-align: left;">No presente documento serão apresentados os temas...</p>
+            `;
+
+            // Inicializa o Summernote com o conteúdo HTML
+            $('#summernote').summernote({
+                placeholder: 'Hello stand alone UI',
+                tabsize: 2,
+                width: 794,
+                height: 794, // Altura da área editável
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+
+            // Define o conteúdo HTML inicial
+            $('#summernote').summernote('code', markdownText);
+        });
+
+        $('#printBtn').on('click', function() {
+            var content = $('#summernote').summernote('code'); // Obtém o conteúdo HTML
+            var printFrame = document.getElementById('printFrame');
+
+            printFrame.contentWindow.document.open();
+            printFrame.contentWindow.document.write('<html><head><title>Print</title>');
+            printFrame.contentWindow.document.write('</head><body style="padding: 15px;">'); // Adiciona padding no body
+            printFrame.contentWindow.document.write(content);
+            printFrame.contentWindow.document.write('</body></html>');
+            printFrame.contentWindow.document.close(); // Fecha o documento
+
+            printFrame.contentWindow.focus(); // Foca no iframe para garantir que o print funcione
+            printFrame.contentWindow.print(); // Aciona o diálogo de impressão
+        });
+    </script>
+</body>
+</html>
