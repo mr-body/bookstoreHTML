@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão de Enviar E-mail</title>
+</head>
+<body>
+    <h1>Redirecionar para um E-mail</h1>
+    <button id="emailButton">Enviar e-mail para todos</button>
+
+    <script>
+        // Lista de e-mails em formato JSON
+        const emailList = [
+            "email1@example.com",
+            "email2@example.com",
+            "email3@example.com"
+        ];
+
+        // Função para gerar o link "mailto:" com todos os e-mails
+        document.getElementById("emailButton").onclick = function() {
+            // Concatena todos os e-mails com vírgula
+            const emails = emailList.join(',');
+            // Cria o link mailto com os e-mails preenchidos
+            const mailtoLink = `mailto:${emails}`;
+            // Redireciona o usuário para o cliente de e-mail
+            window.location.href = mailtoLink;
+        };
+    </script>
+</body>
+</html>
