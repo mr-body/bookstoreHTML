@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Gráfico com ApexCharts</title>
+
+    <!-- Link para o CDN do ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+    <!-- Div onde o gráfico será renderizado -->
+    <div id="grafico"></div>
+
+    <script>
+        // Configuração dos dados do gráfico
+        var options = {
+            chart: {
+                type: 'bar',  // Tipo de gráfico (linha, barra, etc.)
+                height: 350
+            },
+            series: [{
+                name: 'Vendas',
+                data: [30, 40, 35, 50, 49, 60, 70, 91, 125]  // Dados da série
+            }],
+            xaxis: {
+                categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set']  // Categorias do eixo X
+            }
+        };
+
+        // Criação do gráfico
+        var chart = new ApexCharts(document.querySelector("#grafico"), options);
+
+        // Renderiza o gráfico
+        chart.render();
+    </script>
+
+</body>
+</html>
