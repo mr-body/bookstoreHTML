@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sussyToons URL</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Link para o Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex justify-center items-center min-h-screen">
+
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-auto justify-center items-center">
+        <div>
+            <div class="flex flex-row-reverse items-center justify-center mb-4">
+                <h1 class="text-2xl font-bold text-center mb-4">SussyToons Fast</h1>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwf7BUlT5U6_FeLkjaFcbGLJ8XRTGFPeOaXQ&s" width="80" alt="" class="src">
+            </div>
+            
+            <!-- Input de URL e Botão -->
+            <div class="mb-4 flex flex-col gap-4">
+                <input type="url" class="input-obra w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="ID obras" id="input-obra">
+                <input type="number" class="input-capitulo w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Capítulo" id="input-capitulo">
+            </div>
+
+            <!-- Checkbox para selecionar se usa URL base ou obra e capítulo -->
+            <div class="flex items-center gap-2 mb-4">
+                <input type="checkbox" id="use-urlbase" class="h-5 w-5">
+                <label for="use-urlbase" class="text-sm">Usar URL base</label>
+            </div>
+
+            <button class="btn-go w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Go!
+            </button>
+        </div>
+        
+        <div class="result mt-4"></div>
+    </div>
+
+    <script>
+        $(".btn-go").click(() => {
+            const useUrlBase = $("#use-urlbase").is(":checked"); // Verifica se o checkbox está marcado
+            const baseurl = $(".input-obra").val();
+            const obra = $(".input-obra").val();
+            const capitulo = $(".input-capitulo").val();
+            let imageIndex = 1; // Iniciar a partir de 01
+            let validImage = true;
+            let imageUrl;
+
+            // Limpar resultados anteriores
+            $(".result").html("");
+
+            function loadImage(index) {
+                if (useUrlBase) {
+                    // Se usar URL base
+                    imageUrl = `${baseurl.replace(/(\d{2})\.jpg$/, `${String(index).padStart(2, '0')}.jpg`)}`;
+                } else {
+                    // Se usar obra e capítulo
+                    imageUrl = `https://cdn.sussytoons.site/scans/1/obras/${obra}/capitulos/${capitulo}/${String(index).padStart(2, '0')}.jpg`;
+                }
+
+                const img = $("<img>").attr("src", imageUrl).on("error", function() {
+                    validImage = false; // Se imagem não existir, para o processo
+                });
+
+                img.on("load", function() {
+                    $(".result").append(img);
+                    if (validImage) {
+                        // Continuar para o próximo índice
+                        loadImage(imageIndex++);
+                    }
+                });
+
+                // Força a verificação do carregamento, ou seja, se a imagem foi carregada ou se houve erro
+                img[0].src = imageUrl; // Trigger a load for the image
+            }
+
+            // Iniciar a sequência de imagens
+            loadImage(imageIndex);
+        });
+    </script>
+
+</body>
+</html>
