@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Editor Markdown</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --muted:#6b7280;
+      --accent:#4f46e5;
+      --border:#e6e9ef;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      padding:28px;
+      background: linear-gradient(180deg,#f0f4ff 0%, #f6f7fb 100%);
+      color:#111827;
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .container{
+      width:100%;
+      max-width:900px;
+    }
+    .header{
+      display:flex;
+      gap:12px;
+      padding:16px;
+      border-radius:12px 12px 0 0;
+      align-items:center;
+      background:#ffffff;
+      border:1px solid var(--border);
+      border-bottom:none;
+      box-shadow:0 2px 8px rgba(16,24,40,0.04);
+    }
+    .title-input{
+      border:1px solid var(--border);
+      font-weight:600;
+      font-size:18px;
+      padding:10px 16px;
+      outline:none;
+      color:#0f172a;
+      border-radius:8px;
+      background: #f8fafc;
+      flex:1;
+      transition: border 0.2s;
+    }
+    .title-input:focus{
+      border-color:var(--accent);
+    }
+
+    .editor-wrap{
+      background:#ffffff;
+      border:1px solid var(--border);
+      border-radius:0 0 12px 12px;
+      padding:30px;
+      min-height:500px;
+      box-shadow:0 10px 30px rgba(16,24,40,0.08);
+      position:relative;
+    }
+
+    .line-container{
+      position:relative;
+      margin-bottom:12px;
+    }
+
+    .line-markdown{
+      display:none;
+    }
+
+    .line-preview{
+      width:100%;
+      border:2px solid transparent;
+      padding:14px 18px;
+      font-size:16px;
+      line-height:1.7;
+      border-radius:8px;
+      outline:none;
+      color:#0f172a;
+      background:#fafbff;
+      transition: all 0.2s;
+      font-family: Inter, system-ui, sans-serif;
+      min-height:50px;
+      cursor:text;
+    }
+    
+    .line-preview:hover{
+      background:#f3f4ff;
+    }
+
+    .line-preview:focus{
+      border-color:var(--accent);
+      background:#ffffff;
+      box-shadow:0 0 0 3px rgba(79,70,229,0.1);
+    }
+
+    .line-preview:empty:before{
+      content: 'Digite aqui...';
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Estilos para renderização markdown dentro do contenteditable */
+    .line-preview h1{
+      font-size:2em;
+      font-weight:700;
+      margin:0.3em 0;
+      border-bottom:2px solid #e5e7eb;
+      padding-bottom:0.2em;
+    }
+    .line-preview h2{
+      font-size:1.6em;
+      font-weight:600;
+      margin:0.3em 0;
+    }
+    .line-preview h3{
+      font-size:1.3em;
+      font-weight:600;
+      margin:0.3em 0;
+    }
+    .line-preview strong, .line-preview b{
+      font-weight:700;
+      color:#111827;
+    }
+    .line-preview em, .line-preview i{
+      font-style:italic;
+    }
+    .line-preview code{
+      background:#eef2ff;
+      padding:2px 6px;
+      border-radius:4px;
+      font-family:ui-monospace, monospace;
+      font-size:0.9em;
+      color:#4338ca;
+    }
+    .line-preview pre{
+      background:#0f172a;
+      color:#f8fafc;
+      padding:12px;
+      border-radius:6px;
+      overflow:auto;
+      margin:0.5em 0;
+    }
+    .line-preview pre code{
+      background:transparent;
+      color:#f8fafc;
+      padding:0;
+    }
+    .line-preview blockquote{
+      border-left:4px solid #6366f1;
+      padding-left:12px;
+      color:#6b7280;
+      margin:0.5em 0;
+      font-style:italic;
+    }
+    .line-preview a{
+      color:var(--accent);
+      text-decoration:underline;
+    }
+    .line-preview ul, .line-preview ol{
+      margin:0.5em 0;
+      padding-left:1.5em;
+    }
+    .line-preview img{
+      max-width:100%;
+      border-radius:6px;
+      margin:0.5em 0;
+    }
+
+    .floating-toolbar{
+      position:absolute;
+      top:-52px;
+      left:0;
+      right:0;
+      background:#ffffff;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:8px;
+      display:none;
+      gap:4px;
+      z-index:1000;
+      box-shadow:0 4px 12px rgba(16,24,40,0.15);
+      flex-wrap:wrap;
+    }
+
+    .floating-toolbar.active{
+      display:flex;
+    }
+
+    .floating-toolbar button{
+      border:1px solid var(--border);
+      background:#ffffff;
+      padding:6px 10px;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:13px;
+      color:#374151;
+      display:inline-flex;
+      gap:4px;
+      align-items:center;
+      transition: all 0.15s;
+      white-space:nowrap;
+    }
+
+    .floating-toolbar button:hover{
+      background:#f3f4f6;
+      border-color:var(--accent);
+      transform:translateY(-1px);
+    }
+
+    .btn-add{
+      width:100%;
+      border:2px dashed var(--border);
+      background:transparent;
+      padding:14px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:14px;
+      color:var(--muted);
+      margin-top:16px;
+      transition: all 0.2s;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-weight:500;
+    }
+
+    .btn-add:hover{
+      border-color:var(--accent);
+      color:var(--accent);
+      background:#f0f4ff;
+    }
+
+    .bottom-actions{
+      display:flex;
+      gap:10px;
+      padding:16px;
+      align-items:center;
+      justify-content:center;
+      margin-top:20px;
+    }
+    
+    .btn{
+      background:#ffffff;
+      border:1px solid var(--border);
+      padding:10px 20px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:14px;
+      color:#374151;
+      transition: all 0.2s;
+      font-weight:500;
+    }
+    
+    .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(16,24,40,0.1);
+    }
+    
+    .btn.primary{
+      background:var(--accent);
+      color:white;
+      border-color:transparent;
+    }
+    
+    .btn.primary:hover{
+      background:#4338ca;
+    }
+
+    @media (max-width:768px){
+      body{ padding:16px; }
+      .header{ flex-wrap:wrap; }
+      .editor-wrap{ padding:20px; }
+      .floating-toolbar{
+        top:-62px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <input id="title" class="title-input" placeholder="Título do documento..." aria-label="Título">
+    </div>
+
+    <div class="editor-wrap">
+      <div id="lines-container">
+        <!-- Lines will be added here dynamically -->
+      </div>
+
+      <button class="btn-add" id="btn-add-line">
+        <span style="font-size:20px">+</span> Adicionar linha
+      </button>
+    </div>
+
+    <div class="bottom-actions">
+      <button id="btn-copy" class="btn" title="Copiar Markdown">📋 Copiar Markdown</button>
+      <button id="btn-download" class="btn primary" title="Baixar .md">⬇️ Baixar .md</button>
+      <button id="btn-clear" class="btn" title="Limpar">🗑️ Limpar</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+    const linesContainer = document.getElementById('lines-container');
+    const titleInput = document.getElementById('title');
+    let lineCounter = 0;
+    let currentFocusedLine = null;
+
+    marked.setOptions({
+      gfm: true,
+      breaks: true,
+      headerIds: true,
+      mangle: false,
+    });
+
+    const STORAGE_KEY = 'markdown_lines_editor_v2';
+
+    function htmlToMarkdown(html) {
+      let md = html;
+      md = md.replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1');
+      md = md.replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1');
+      md = md.replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1');
+      md = md.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
+      md = md.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
+      md = md.replace(/<em[^>]*>(.*?)<\/em>/gi, '_$1_');
+      md = md.replace(/<i[^>]*>(.*?)<\/i>/gi, '_$1_');
+      md = md.replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gi, '> $1');
+      md = md.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
+      md = md.replace(/<pre[^>]*><code[^>]*>(.*?)<\/code><\/pre>/gi, '```\n$1\n```');
+      md = md.replace(/<pre[^>]*>(.*?)<\/pre>/gi, '```\n$1\n```');
+      md = md.replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)');
+      md = md.replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi, '![$2]($1)');
+      md = md.replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1');
+      md = md.replace(/<ul[^>]*>(.*?)<\/ul>/gi, '$1');
+      md = md.replace(/<ol[^>]*>(.*?)<\/ol>/gi, '$1');
+      md = md.replace(/<p[^>]*>(.*?)<\/p>/gi, '$1');
+      md = md.replace(/<br\s*\/?>/gi, '\n');
+      md = md.replace(/<div[^>]*>(.*?)<\/div>/gi, '$1');
+      md = md.replace(/<[^>]+>/g, '');
+      md = md.replace(/&nbsp;/g, ' ');
+      md = md.replace(/&lt;/g, '<');
+      md = md.replace(/&gt;/g, '>');
+      md = md.replace(/&amp;/g, '&');
+      md = md.replace(/&quot;/g, '"');
+      return md.trim();
+    }
+
+    function createLineElement(markdownValue = '') {
+      const lineId = `line-${lineCounter++}`;
+      const container = document.createElement('div');
+      container.className = 'line-container';
+      container.dataset.lineId = lineId;
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'floating-toolbar';
+      toolbar.innerHTML = `
+        <button data-action="bold" title="Negrito (Ctrl+B)"><strong>B</strong></button>
+        <button data-action="italic" title="Itálico (Ctrl+I)"><em>I</em></button>
+        <button data-action="h1" title="H1">H1</button>
+        <button data-action="h2" title="H2">H2</button>
+        <button data-action="h3" title="H3">H3</button>
+        <button data-action="quote" title="Citação">❝</button>
+        <button data-action="code" title="Código inline">&lt;/&gt;</button>
+        <button data-action="codeblock" title="Bloco de código">{ }</button>
+        <button data-action="link" title="Link">🔗</button>
+        <button data-action="image" title="Imagem">🖼️</button>
+        <button data-action="ul" title="Lista">• Lista</button>
+        <button data-action="ol" title="Lista numerada">1. Lista</button>
+      `;
+
+      const hiddenMarkdown = document.createElement('input');
+      hiddenMarkdown.type = 'hidden';
+      hiddenMarkdown.className = 'line-markdown';
+      hiddenMarkdown.value = markdownValue;
+
+      const preview = document.createElement('div');
+      preview.className = 'line-preview';
+      preview.contentEditable = 'true';
+      preview.dataset.lineId = lineId;
+
+      // Renderizar markdown inicial
+      if (markdownValue) {
+        try {
+          preview.innerHTML = marked.parse(markdownValue);
+        } catch(e) {
+          preview.textContent = markdownValue;
+        }
+      }
+
+      preview.addEventListener('focus', () => {
+        currentFocusedLine = { preview, hiddenMarkdown };
+        document.querySelectorAll('.floating-toolbar').forEach(t => t.classList.remove('active'));
+        toolbar.classList.add('active');
+      });
+
+      preview.addEventListener('blur', () => {
+        setTimeout(() => {
+          if (!toolbar.contains(document.activeElement)) {
+            toolbar.classList.remove('active');
+          }
+        }, 150);
+        // Converter HTML de volta para markdown ao perder foco
+        hiddenMarkdown.value = htmlToMarkdown(preview.innerHTML);
+        saveToStorage();
+      });
+
+      preview.addEventListener('input', () => {
+        hiddenMarkdown.value = htmlToMarkdown(preview.innerHTML);
+        saveToStorage();
+      });
+
+      preview.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+
+      toolbar.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+      });
+
+      toolbar.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.dataset.action;
+          handleFormatAction(action, preview, hiddenMarkdown);
+          preview.focus();
+        });
+      });
+
+      container.appendChild(toolbar);
+      container.appendChild(hiddenMarkdown);
+      container.appendChild(preview);
+
+      return container;
+    }
+
+    function handleFormatAction(action, preview, hiddenMarkdown) {
+      const currentMd = hiddenMarkdown.value;
+
+      switch(action) {
+        case 'bold':
+          document.execCommand('bold');
+          break;
+        case 'italic':
+          document.execCommand('italic');
+          break;
+        case 'h1':
+          hiddenMarkdown.value = '# ' + currentMd.replace(/^#+\s*/, '');
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+        case 'h2':
+          hiddenMarkdown.value = '## ' + currentMd.replace(/^#+\s*/, '');
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+        case 'h3':
+          hiddenMarkdown.value = '### ' + currentMd.replace(/^#+\s*/, '');
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+        case 'quote':
+          hiddenMarkdown.value = '> ' + currentMd.replace(/^>\s*/, '');
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+        case 'code':
+          const sel = window.getSelection();
+          if (sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            const selectedText = range.toString() || 'código';
+            const code = document.createElement('code');
+            code.textContent = selectedText;
+            range.deleteContents();
+            range.insertNode(code);
+          }
+          break;
+        case 'codeblock':
+          hiddenMarkdown.value = '```\n' + currentMd.replace(/^```\n?|```$/g, '') + '\n```';
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+        case 'link':
+          const url = prompt('URL (ex: https://example.com)', 'https://');
+          if (url) {
+            const linkText = window.getSelection().toString() || 'texto do link';
+            hiddenMarkdown.value = `[${linkText}](${url})`;
+            preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          }
+          break;
+        case 'image':
+          const imgUrl = prompt('URL da imagem', 'https://');
+          if (imgUrl) {
+            const altText = prompt('Texto alternativo', 'imagem') || 'imagem';
+            hiddenMarkdown.value = `![${altText}](${imgUrl})`;
+            preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          }
+          break;
+        case 'ul':
+          hiddenMarkdown.value = '- ' + currentMd.replace(/^-\s*|\d+\.\s*/, '');
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+        case 'ol':
+          hiddenMarkdown.value = '1. ' + currentMd.replace(/^-\s*|\d+\.\s*/, '');
+          preview.innerHTML = marked.parse(hiddenMarkdown.value);
+          break;
+      }
+
+      hiddenMarkdown.value = htmlToMarkdown(preview.innerHTML);
+      saveToStorage();
+    }
+
+    function saveToStorage() {
+      const lines = Array.from(document.querySelectorAll('.line-markdown')).map(input => input.value);
+      const data = {
+        title: titleInput.value,
+        lines: lines
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch(e) {}
+    }
+
+    function loadFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        
+        const data = JSON.parse(raw);
+        titleInput.value = data.title || '';
+        
+        if (data.lines && data.lines.length > 0) {
+          data.lines.forEach(line => {
+            const lineEl = createLineElement(line);
+            linesContainer.appendChild(lineEl);
+          });
+          return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    document.getElementById('btn-add-line').addEventListener('click', () => {
+      const lineEl = createLineElement();
+      linesContainer.appendChild(lineEl);
+      lineEl.querySelector('.line-preview').focus();
+      saveToStorage();
+    });
+
+    document.getElementById('btn-copy').addEventListener('click', async () => {
+      const lines = Array.from(document.querySelectorAll('.line-markdown'))
+        .map(input => input.value)
+        .filter(line => line.trim());
+      const markdown = lines.join('\n\n');
+      
+      try {
+        await navigator.clipboard.writeText(markdown);
+        alert('✅ Markdown copiado!');
+      } catch(e) {
+        alert('Erro ao copiar.');
+      }
+    });
+
+    document.getElementById('btn-download').addEventListener('click', () => {
+      const lines = Array.from(document.querySelectorAll('.line-markdown'))
+        .map(input => input.value)
+        .filter(line => line.trim());
+      const markdown = lines.join('\n\n');
+      const filename = (titleInput.value || 'documento') + '.md';
+      const content = (titleInput.value ? '# ' + titleInput.value + '\n\n' : '') + markdown;
+      
+      const blob = new Blob([content], {type:'text/markdown;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+      if (confirm('Limpar todo o conteúdo?')) {
+        linesContainer.innerHTML = '';
+        titleInput.value = '';
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch(e) {}
+      }
+    });
+
+    titleInput.addEventListener('input', saveToStorage);
+
+    // Atalhos de teclado
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        if (currentFocusedLine) {
+          document.execCommand('bold');
+        }
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+        e.preventDefault();
+        if (currentFocusedLine) {
+          document.execCommand('italic');
+        }
+      }
+    });
+
+    // Initialize
+    if (!loadFromStorage()) {
+      for (let i = 0; i < 3; i++) {
+        const lineEl = createLineElement();
+        linesContainer.appendChild(lineEl);
+      }
+    }
+  </script>
+</body>
+</html>
